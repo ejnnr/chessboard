@@ -14,7 +14,6 @@
 	
 	/**
 	* A class to load FENs or PGNs and show them on a chessboard
-	* @author	Erik Jenner
 	*/
 	
 	class chessboard
