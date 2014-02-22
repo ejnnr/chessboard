@@ -1,6 +1,4 @@
 <?php
-	error_reporting(E_ALL); /* only for test version */
-	
 	class chessboardException extends Exception {}
 	
 	/*
@@ -372,6 +370,82 @@
     		                {
     		                    return FALSE;
     		                }
+    		            }
+    		            else
+    		            {
+    		                return FALSE;
+    		            }
+		            }
+		            else
+		            {
+		                return FALSE;
+		            }
+		            break;
+				
+				case "B": /* white bishop */
+					if ($this->turn == "w") /* is it white's turn? */
+		            {
+		                if (abs($start[0] - $target[0]) == abs($start[1] - $target[1]))
+    		            {
+							$x = $start[0];
+							$y = $start[1];
+							$change_x = ($start[0] - $target[0]) / abs($start[0] - $target[0]);
+							$change_y = ($start[1] - $target[1]) / abs($start[1] - $target[1]);
+							while (!($x == $target[0] && $y == $target[1]))
+							{
+								$x += $change_x;
+								$y += $change_y;
+								if (empty($this->board[$y][$x]))
+								{
+									return FALSE;
+								}
+							}
+							if (!in_array($this->board[$target[1]][$target[0]], $this->whitePieces)) /* check if a piece of the same color is on the square */
+							{
+								return TRUE;  
+							}
+							else
+							{
+								return FALSE;
+							}
+    		            }
+    		            else
+    		            {
+    		                return FALSE;
+    		            }
+		            }
+		            else
+		            {
+		                return FALSE;
+		            }
+		            break;
+					
+				case "B": /* black bishop */
+					if ($this->turn == "b") /* is it black's turn? */
+		            {
+		                if (abs($start[0] - $target[0]) == abs($start[1] - $target[1]))
+    		            {
+							$x = $start[0];
+							$y = $start[1];
+							$change_x = ($start[0] - $target[0]) / abs($start[0] - $target[0]);
+							$change_y = ($start[1] - $target[1]) / abs($start[1] - $target[1]);
+							while (!($x == $target[0] && $y == $target[1]))
+							{
+								$x += $change_x;
+								$y += $change_y;
+								if (empty($this->board[$y][$x]))
+								{
+									return FALSE;
+								}
+							}
+							if (!in_array($this->board[$target[1]][$target[0]], $this->whitePieces)) /* check if a piece of the same color is on the square */
+							{
+								return TRUE;  
+							}
+							else
+							{
+								return FALSE;
+							}
     		            }
     		            else
     		            {
