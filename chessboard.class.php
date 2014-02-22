@@ -1,7 +1,7 @@
 <?php
 	error_reporting(E_ALL); /* only for test version */
 	
-	class chessboardException extends Exception {};
+	class chessboardException extends Exception {}
 	
 	/*
 		Exception codes:
