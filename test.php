@@ -22,6 +22,7 @@
 	</head>
 	<body>
 		<?php
+			include "chessboard.class.php";
 			$board1 = new chessboard("", "8/1k6/8/8/8/8/1K6/8 w - - 0 1");
 			echo $board1->getHTML();
 			var_dump($board1->isValidMove("b2", "a3"));
