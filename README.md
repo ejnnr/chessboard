@@ -1,6 +1,8 @@
 chessboard
 ==========
 
-A php and javascript framework to display a chessboard, load FENs and PGNs and let the user make moves.
+A php class to display a chessboard, load FENs and PGNs.
 
-This framework isn't ready yet. In the future there will be not only a php class, but also a javascript, which uses ajax to use the php class.
+This framework isn't ready yet.
+
+There is a javascript Webinterface, which uses this class with Ajax: https://github.com/jupiter24/WebChess.
