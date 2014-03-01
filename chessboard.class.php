@@ -420,7 +420,7 @@
 		            }
 		            break;
 					
-				case "B": /* black bishop */
+				case "b": /* black bishop */
 					if ($this->turn == "b") /* is it black's turn? */
 		            {
 		                if (abs($start[0] - $target[0]) == abs($start[1] - $target[1]))
