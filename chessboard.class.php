@@ -543,6 +543,58 @@
 		                return FALSE;
 		            }
 		            break;
+					
+				case "Q":
+					if ($this->turn != "w") /* is it white's turn? */
+		            {
+						return FALSE;
+					}
+					if (in_array($this->board[$target[1]][$target[0]], $this->whitePieces)) /* check if a piece of the same color is on the square */
+					{
+						return FALSE;  
+					}
+
+					if (($start[0] - $target[0] == 0) || ($start[1] - $target[1] == 0))
+					{
+						$change_x = (($target[0] - $start[0] == 0) ? 0 : ($target[0] - $start[0]) / abs($start[0] - $target[0]));
+						$change_y = (($target[1] - $start[1] == 0) ? 0 : ($target[1] - $start[1]) / abs($start[1] - $target[1]));
+						$x = $start[0];
+						$y = $start[1];
+						$x += $change_x;
+						$y += $change_y;
+						while (!($x == $target[0] && $y == $target[1]))
+						{
+							if (!empty($this->board[$y][$x]))
+							{
+								return FALSE;
+							}
+							$x += $change_x;
+							$y += $change_y;
+						}
+						return TRUE;	
+					}
+					if (abs($start[0] - $target[0]) == abs($start[1] - $target[1]))
+					{
+						$x = $start[0];
+						$y = $start[1];
+						$change_x = ($target[0] - $start[0]) / abs($start[0] - $target[0]);
+						$change_y = ($target[1] - $start[1]) / abs($start[1] - $target[1]);
+						$x += $change_x;
+						$y += $change_y;
+						while (!($x == $target[0] && $y == $target[1]))
+						{
+							
+							if (!empty($this->board[$y][$x]))
+							{
+								return FALSE;
+							}
+							$x += $change_x;
+							$y += $change_y;
+						}
+						return TRUE;
+					}
+					return FALSE;
+		            break;
 		    }
 		}
 		
@@ -550,6 +602,8 @@
 		* string getHTML ()
 		*
 		* Returns HTML-Code for the board
+		*
+		* only for testing
 		*/
 		
 		function getHTML()
