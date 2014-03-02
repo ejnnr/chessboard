@@ -400,7 +400,7 @@
 					{
 						return TRUE;	
 					}
-					if (($target[1] - $start[1] == 1 ) && (abs($target[0] - $start[0]) == 1) && (!empty($board[$target[1]][$target[0]])))
+					if (($target[1] - $start[1] == 1 ) && (abs($target[0] - $start[0]) == 1) && ((!empty($board[$target[1]][$target[0]])) || parseSquare($this->enPassant) == (string)$start . (string)$target))
 					{
 						return TRUE;
 					}
@@ -411,7 +411,7 @@
 					{
 						return TRUE;	
 					}
-					if (($target[1] - $start[1] == -1 ) && (abs($target[0] - $start[0]) == 1) && (!empty($board[$target[1]][$target[0]])))
+					if (($target[1] - $start[1] == -1 ) && (abs($target[0] - $start[0]) == 1) && ((!empty($board[$target[1]][$target[0]])) || parseSquare($this->enPassant) == (string)$start . (string)$target))
 					{
 						return TRUE;
 					}
