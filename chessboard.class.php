@@ -64,6 +64,10 @@
 				/* validate fen */
 				if (count($sections) == 6)
 				{
+					if (strpos($sections[0], "K") === FALSE || strpos($sections[0], "k") === FALSE)
+					{
+						throw new chessboardException("Function loadFen: there must be a black and a white king on the board.", 4);
+					}
 					/* split position into ranks */
 					$ranks = explode("/", $sections[0]);
 					
