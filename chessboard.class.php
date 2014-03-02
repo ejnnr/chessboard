@@ -47,6 +47,64 @@
 		}
 		
 		/**
+		* int parseSquare (string square)
+		*
+		* converts "e4" into 54
+		*/
+		
+		private function parseSquare($square)
+		{
+			if (strlen((string)$square) == 2)
+		    {
+		        if (preg_match("/[a-h][1-8]/", (string)$square))
+		        {
+		            switch (substr($square, 0, 1))
+		            {
+		                case "a":
+		                    $square = "1" . substr($square, 1, 1);
+		                    break;
+		                case "b":
+		                    $square = "2" . substr($square, 1, 1);
+		                    break;
+		                case "c":
+		                    $square = "3" . substr($square, 1, 1);
+		                    break;
+		                case "d":
+		                    $square = "4" . substr($square, 1, 1);
+		                    break;
+		                case "e":
+		                    $square = "5" . substr($square, 1, 1);
+		                    break;
+		                case "f":
+		                    $square = "6" . substr($square, 1, 1);
+		                    break;
+		                case "g":
+		                    $square = "7" . substr($square, 1, 1);
+		                    break;
+		                case "h":
+		                    $square = "8" . substr($square, 1, 1);
+		                    break;
+		                default:
+		                    throw new chessboardException("Function parseSquare: argument square must start with a number or a letter from a to h", 4);
+		            }
+		        }
+		        else
+		        {
+		            if (!preg_match("/[1-8][1-8]/", (string)$square))
+		            {
+		                throw new chessboardException("Function parseSquare: argument square must start with a number or a letter from a to h", 4);
+		            }
+		        }
+		    }
+		    else
+		    {
+		        throw new chessboardException("Function parseSquare: square must have a length of two", 4);
+		    }
+			
+			return $square;
+		}
+		
+		/**
 		* void loadFen (string fen)
 		*
 		* Loads a FEN
@@ -190,92 +248,8 @@
 		
 		function isPossibleMove($start, $target, $board)
 		{
-			if ((strlen((string)$start) == 2) && (strlen((string)$target) == 2))
-		    {
-		        if (preg_match("/[a-h][1-8]/", (string)$start))
-		        {
-		            switch (substr($start, 0, 1))
-		            {
-		                case "a":
-		                    $start = "1" . substr($start, 1, 1);
-		                    break;
-		                case "b":
-		                    $start = "2" . substr($start, 1, 1);
-		                    break;
-		                case "c":
-		                    $start = "3" . substr($start, 1, 1);
-		                    break;
-		                case "d":
-		                    $start = "4" . substr($start, 1, 1);
-		                    break;
-		                case "e":
-		                    $start = "5" . substr($start, 1, 1);
-		                    break;
-		                case "f":
-		                    $start = "6" . substr($start, 1, 1);
-		                    break;
-		                case "g":
-		                    $start = "7" . substr($start, 1, 1);
-		                    break;
-		                case "h":
-		                    $start = "8" . substr($start, 1, 1);
-		                    break;
-		                default:
-		                    throw new chessboardException("Function isPossibleMove: argument start must start with a number or a letter from a to h", 4);
-		            }
-		        }
-		        else
-		        {
-		            if (!preg_match("/[1-8][1-8]/", (string)$start))
-		            {
-		                throw new chessboardException("Function isPossibleMove: argument start must start with a number or a letter from a to h", 4);
-		            }
-		        }
-		        
-		        if (preg_match("/[a-h][1-8]/", (string)$target))
-		        {
-		            switch (substr($target, 0, 1))
-		            {
-		                case "a":
-		                    $target = "1" . substr($target, 1, 1);
-		                    break;
-		                case "b":
-		                    $target = "2" . substr($target, 1, 1);
-		                    break;
-		                case "c":
-		                    $target = "3" . substr($target, 1, 1);
-		                    break;
-		                case "d":
-		                    $target = "4" . substr($target, 1, 1);
-		                    break;
-		                case "e":
-		                    $target = "5" . substr($target, 1, 1);
-		                    break;
-		                case "f":
-		                    $target = "6" . substr($target, 1, 1);
-		                    break;
-		                case "g":
-		                    $target = "7" . substr($target, 1, 1);
-		                    break;
-		                case "h":
-		                    $target = "8" . substr($target, 1, 1);
-		                    break;
-		                default:
-		                    throw new chessboardException("Function isPossibleMove: argument target must start with a number or a letter from a to h", 4);
-		            }
-		        }
-		        else
-		        {
-		            if (!preg_match("/[1-8][1-8]/", (string)$target))
-		            {
-		                throw new chessboardException("Function isPossibleMove: argument target must start with a number or a letter from a to h", 4);
-		            }
-		        }
-		    }
-		    else
-		    {
-		        throw new chessboardException("Function isPossibleMove: start and target must have a length of two", 4);
-		    }
+			$start = parseSquare($start);
+			$target = parseSquare($target);
 		    $start = array((int)substr($start, 0, 1) - 1, ((int)substr($start, 1, 1)) - 1);
 		    $target = array((int)substr($target, 0, 1) - 1, ((int)substr($target, 1, 1)) - 1);
 		    
@@ -647,98 +621,14 @@
 		}
 		
 		function isValidMove($start, $target)
-		{
-			if ((strlen((string)$start) == 2) && (strlen((string)$target) == 2))
-		    {
-		        if (preg_match("/[a-h][1-8]/", (string)$start))
-		        {
-		            switch (substr($start, 0, 1))
-		            {
-		                case "a":
-		                    $start = "1" . substr($start, 1, 1);
-		                    break;
-		                case "b":
-		                    $start = "2" . substr($start, 1, 1);
-		                    break;
-		                case "c":
-		                    $start = "3" . substr($start, 1, 1);
-		                    break;
-		                case "d":
-		                    $start = "4" . substr($start, 1, 1);
-		                    break;
-		                case "e":
-		                    $start = "5" . substr($start, 1, 1);
-		                    break;
-		                case "f":
-		                    $start = "6" . substr($start, 1, 1);
-		                    break;
-		                case "g":
-		                    $start = "7" . substr($start, 1, 1);
-		                    break;
-		                case "h":
-		                    $start = "8" . substr($start, 1, 1);
-		                    break;
-		                default:
-		                    throw new chessboardException("Function isValidMove: argument start must start with a number or a letter from a to h", 4);
-		            }
-		        }
-		        else
-		        {
-		            if (!preg_match("/[1-8][1-8]/", (string)$start))
-		            {
-		                throw new chessboardException("Function isValidMove: argument start must start with a number or a letter from a to h", 4);
-		            }
-		        }
-		        
-		        if (preg_match("/[a-h][1-8]/", (string)$target))
-		        {
-		            switch (substr($target, 0, 1))
-		            {
-		                case "a":
-		                    $target = "1" . substr($target, 1, 1);
-		                    break;
-		                case "b":
-		                    $target = "2" . substr($target, 1, 1);
-		                    break;
-		                case "c":
-		                    $target = "3" . substr($target, 1, 1);
-		                    break;
-		                case "d":
-		                    $target = "4" . substr($target, 1, 1);
-		                    break;
-		                case "e":
-		                    $target = "5" . substr($target, 1, 1);
-		                    break;
-		                case "f":
-		                    $target = "6" . substr($target, 1, 1);
-		                    break;
-		                case "g":
-		                    $target = "7" . substr($target, 1, 1);
-		                    break;
-		                case "h":
-		                    $target = "8" . substr($target, 1, 1);
-		                    break;
-		                default:
-		                    throw new chessboardException("Function isValidMove: argument target must start with a number or a letter from a to h", 4);
-		            }
-		        }
-		        else
-		        {
-		            if (!preg_match("/[1-8][1-8]/", (string)$target))
-		            {
-		                throw new chessboardException("Function isValidMove: argument target must start with a number or a letter from a to h", 4);
-		            }
-		        }
-		    }
-		    else
-		    {
-		        throw new chessboardException("Function isValidMove: start and target must have a length of two", 4);
-		    }
-			
+		{	
 			if (!$this->isPossibleMove($start, $target, $this->board))
 			{
 				return FALSE;
 			}
+			
+			$start = parseSquare($start);
+			$target = parseSquare($target);
 			
 		    $start = array((int)substr($start, 0, 1) - 1, ((int)substr($start, 1, 1)) - 1);
 		    $target = array((int)substr($target, 0, 1) - 1, ((int)substr($target, 1, 1)) - 1);
@@ -810,92 +700,8 @@
 		
 		function doMove($start, $target)
 		{
-			if ((strlen((string)$start) == 2) && (strlen((string)$target) == 2))
-		    {
-		        if (preg_match("/[a-h][1-8]/", (string)$start))
-		        {
-		            switch (substr($start, 0, 1))
-		            {
-		                case "a":
-		                    $start = "1" . substr($start, 1, 1);
-		                    break;
-		                case "b":
-		                    $start = "2" . substr($start, 1, 1);
-		                    break;
-		                case "c":
-		                    $start = "3" . substr($start, 1, 1);
-		                    break;
-		                case "d":
-		                    $start = "4" . substr($start, 1, 1);
-		                    break;
-		                case "e":
-		                    $start = "5" . substr($start, 1, 1);
-		                    break;
-		                case "f":
-		                    $start = "6" . substr($start, 1, 1);
-		                    break;
-		                case "g":
-		                    $start = "7" . substr($start, 1, 1);
-		                    break;
-		                case "h":
-		                    $start = "8" . substr($start, 1, 1);
-		                    break;
-		                default:
-		                    throw new chessboardException("Function doMove: argument start must start with a number or a letter from a to h", 4);
-		            }
-		        }
-		        else
-		        {
-		            if (!preg_match("/[1-8][1-8]/", (string)$start))
-		            {
-		                throw new chessboardException("Function doMove: argument start must start with a number or a letter from a to h", 4);
-		            }
-		        }
-		        
-		        if (preg_match("/[a-h][1-8]/", (string)$target))
-		        {
-		            switch (substr($target, 0, 1))
-		            {
-		                case "a":
-		                    $target = "1" . substr($target, 1, 1);
-		                    break;
-		                case "b":
-		                    $target = "2" . substr($target, 1, 1);
-		                    break;
-		                case "c":
-		                    $target = "3" . substr($target, 1, 1);
-		                    break;
-		                case "d":
-		                    $target = "4" . substr($target, 1, 1);
-		                    break;
-		                case "e":
-		                    $target = "5" . substr($target, 1, 1);
-		                    break;
-		                case "f":
-		                    $target = "6" . substr($target, 1, 1);
-		                    break;
-		                case "g":
-		                    $target = "7" . substr($target, 1, 1);
-		                    break;
-		                case "h":
-		                    $target = "8" . substr($target, 1, 1);
-		                    break;
-		                default:
-		                    throw new chessboardException("Function doMove: argument target must start with a number or a letter from a to h", 4);
-		            }
-		        }
-		        else
-		        {
-		            if (!preg_match("/[1-8][1-8]/", (string)$target))
-		            {
-		                throw new chessboardException("Function doMove: argument target must start with a number or a letter from a to h", 4);
-		            }
-		        }
-		    }
-		    else
-		    {
-		        throw new chessboardException("Function isValidMove: start and target must have a length of two", 4);
-		    }
+			$start = parseSquare($start);
+			$target = parseSquare($target);
 		    $start = array((int)substr($start, 0, 1) - 1, ((int)substr($start, 1, 1)) - 1);
 		    $target = array((int)substr($target, 0, 1) - 1, ((int)substr($target, 1, 1)) - 1);
 		}
