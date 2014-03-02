@@ -248,8 +248,8 @@
 		
 		function isPossibleMove($start, $target, $board)
 		{
-			$start = parseSquare($start);
-			$target = parseSquare($target);
+			$start = $this->parseSquare($start);
+			$target = $this->parseSquare($target);
 		    $start = array((int)substr($start, 0, 1) - 1, ((int)substr($start, 1, 1)) - 1);
 		    $target = array((int)substr($target, 0, 1) - 1, ((int)substr($target, 1, 1)) - 1);
 		    
@@ -627,8 +627,8 @@
 				return FALSE;
 			}
 			
-			$start = parseSquare($start);
-			$target = parseSquare($target);
+			$start = $this->parseSquare($start);
+			$target = $this->parseSquare($target);
 			
 		    $start = array((int)substr($start, 0, 1) - 1, ((int)substr($start, 1, 1)) - 1);
 		    $target = array((int)substr($target, 0, 1) - 1, ((int)substr($target, 1, 1)) - 1);
@@ -700,8 +700,8 @@
 		
 		function doMove($start, $target)
 		{
-			$start = parseSquare($start);
-			$target = parseSquare($target);
+			$start = $this->parseSquare($start);
+			$target = $this->parseSquare($target);
 		    $start = array((int)substr($start, 0, 1) - 1, ((int)substr($start, 1, 1)) - 1);
 		    $target = array((int)substr($target, 0, 1) - 1, ((int)substr($target, 1, 1)) - 1);
 		}
