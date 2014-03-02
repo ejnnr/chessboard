@@ -258,95 +258,46 @@
 		        return FALSE;
 		    }
 		    
+			if (in_array($board[$start[1]][$start[0]], $this->whitePieces) && in_array($board[$target[1]][$target[0]], $this->whitePieces)) /* check if a piece of the same color is on the square */
+			{
+				return FALSE;  
+			}
+			
+			if (in_array($board[$start[1]][$start[0]], $this->blackPieces) && in_array($board[$target[1]][$target[0]], $this->blackPieces)) /* check if a piece of the same color is on the square */
+			{
+				return FALSE;  
+			}
+			
 		    switch ($board[$start[1]][$start[0]])
 		    {
 		        case "":
 		            return FALSE;
-		            break;
 		            
-		        case "N": /* white Knight */
-		            
+		        case "N": /* knight */
+		        case "n":
 					if (((abs($start[0] - $target[0]) == 2) && (abs($start[1] - $target[1]) == 1)) || ((abs($start[0] - $target[0]) == 1) && (abs($start[1] - $target[1]) == 2)))
 					{
-						if (!in_array($board[$target[1]][$target[0]], $this->whitePieces)) /* check if a piece of the same color is on the square */
-						{
-							return TRUE;  
-						}
-						else
-						{
-							return FALSE;
-						}
+						return TRUE;  
+
 					}
 					else
 					{
 						return FALSE;
 					}
-				
-		            break;
-		            
-		        case "n": /* black Knight */
-		           
-					if (((abs($start[0] - $target[0]) == 2) && (abs($start[1] - $target[1]) == 1)) || ((abs($start[0] - $target[0]) == 1) && (abs($start[1] - $target[1]) == 2)))
-					{
-						if (!in_array($board[$target[1]][$target[0]], $this->blackPieces)) /* check if a piece of the same color is on the square */
-						{
-							return TRUE;  
-						}
-						else
-						{
-							return FALSE;
-						}
-					}
-					else
-					{
-						return FALSE;
-					}
-		            
-		            
-		            break;
-		          
-		        case "K": /* white King */
-		            
+		        
+		        case "K": /* King */
+		        case "k":    
 					if ((abs($start[0] - $target[0]) == 1 && abs($start[1] - $target[1]) == 1) || (abs($start[0] - $target[0]) == 0 && abs($start[1] - $target[1]) == 1) || (abs($start[0] - $target[0]) == 1 && abs($start[1] - $target[1]) == 0))
 					{
-						if (!in_array($board[$target[1]][$target[0]], $this->whitePieces)) /* check if a piece of the same color is on the square */
-						{
-							return TRUE;  
-						}
-						else
-						{
-							return FALSE;
-						}
+						return TRUE;  
 					}
 					else
 					{
 						return FALSE;
 					}
-		            
-		            break;
 		          
-		        case "k": /* black King */
-		            
-					if ((abs($start[0] - $target[0]) == 1 && abs($start[1] - $target[1]) == 1) || (abs($start[0] - $target[0]) == 0 && abs($start[1] - $target[1]) == 1) || (abs($start[0] - $target[0]) == 1 && abs($start[1] - $target[1]) == 0))
-					{
-						if (!in_array($board[$target[1]][$target[0]], $this->blackPieces)) /* check if a piece of the same color is on the square */
-						{
-							return TRUE;  
-						}
-						else
-						{
-							return FALSE;
-						}
-					}
-					else
-					{
-						return FALSE;
-					}
-		            
-		            break;
-				
-				case "B": /* white bishop */
-					
+				case "B": /* bishop */
+				case "b":	
 					if (abs($start[0] - $target[0]) == abs($start[1] - $target[1]))
 					{
 						$x = $start[0];
@@ -365,60 +316,17 @@
 							$x += $change_x;
 							$y += $change_y;
 						}
-						if (!in_array($board[$target[1]][$target[0]], $this->whitePieces)) /* check if a piece of the same color is on the square */
-						{
-							return TRUE;  
-						}
-						else
-						{
-							return FALSE;
-						}
+						
+						return TRUE;  
+
 					}
 					else
 					{
 						return FALSE;
 					}
-		            
-		            break;
 					
-				case "b": /* black bishop */
-					
-					if (abs($start[0] - $target[0]) == abs($start[1] - $target[1]))
-					{
-						$x = $start[0];
-						$y = $start[1];
-						$change_x = ($target[0] - $start[0]) / abs($start[0] - $target[0]);
-						$change_y = ($target[1] - $start[1]) / abs($start[1] - $target[1]);
-						$x += $change_x;
-						$y += $change_y;
-						while (!($x == $target[0] && $y == $target[1]))
-						{
-							
-							if (!empty($board[$y][$x]))
-							{
-								return FALSE;
-							}
-							$x += $change_x;
-							$y += $change_y;
-						}
-						if (!in_array($board[$target[1]][$target[0]], $this->blackPieces)) /* check if a piece of the same color is on the square */
-						{
-							return TRUE;  
-						}
-						else
-						{
-							return FALSE;
-						}
-					}
-					else
-					{
-						return FALSE;
-					}
-		            
-		            break;
-				
-				case "R": /* white rook */
-					
+				case "R": /* rook */
+				case "r":	
 					if (($start[0] - $target[0] == 0) || ($start[1] - $target[1] == 0))
 					{
 						$change_x = (($target[0] - $start[0] == 0) ? 0 : ($target[0] - $start[0]) / abs($start[0] - $target[0]));
@@ -436,62 +344,15 @@
 							$x += $change_x;
 							$y += $change_y;
 						}
-						if (!in_array($board[$target[1]][$target[0]], $this->whitePieces)) /* check if a piece of the same color is on the square */
-						{
-							return TRUE;  
-						}
-						else
-						{
-							return FALSE;
-						}
+						return TRUE;
 					}
 					else
 					{
 						return FALSE;
 					}
-		            
-		            break;
 				
-				case "r": /* black rook */
-					
-					if (($start[0] - $target[0] == 0) || ($start[1] - $target[1] == 0))
-					{
-						$change_x = (($target[0] - $start[0] == 0) ? 0 : ($target[0] - $start[0]) / abs($start[0] - $target[0]));
-						$change_y = (($target[1] - $start[1] == 0) ? 0 : ($target[1] - $start[1]) / abs($start[1] - $target[1]));
-						$x = $start[0];
-						$y = $start[1];
-						$x += $change_x;
-						$y += $change_y;
-						while (!($x == $target[0] && $y == $target[1]))
-						{
-							if (!empty($board[$y][$x]))
-							{
-								return FALSE;
-							}
-							$x += $change_x;
-							$y += $change_y;
-						}
-						if (!in_array($board[$target[1]][$target[0]], $this->blackPieces)) /* check if a piece of the same color is on the square */
-						{
-							return TRUE;  
-						}
-						else
-						{
-							return FALSE;
-						}
-					}
-					else
-					{
-						return FALSE;
-					}
-		            
-		            break;
-					
-				case "Q": /* white queen */
-					if (in_array($board[$target[1]][$target[0]], $this->whitePieces)) /* check if a piece of the same color is on the square */
-					{
-						return FALSE;  
-					}
+				case "Q": /* queen */
+				case "q":
 
 					if (($start[0] - $target[0] == 0) || ($start[1] - $target[1] == 0))
 					{
@@ -533,62 +394,8 @@
 						return TRUE;
 					}
 					return FALSE;
-		            break;
 					
-				case "q": /* black queen */
-					if (in_array($board[$target[1]][$target[0]], $this->blackPieces)) /* check if a piece of the same color is on the square */
-					{
-						return FALSE;  
-					}
-
-					if (($start[0] - $target[0] == 0) || ($start[1] - $target[1] == 0))
-					{
-						$change_x = (($target[0] - $start[0] == 0) ? 0 : ($target[0] - $start[0]) / abs($start[0] - $target[0]));
-						$change_y = (($target[1] - $start[1] == 0) ? 0 : ($target[1] - $start[1]) / abs($start[1] - $target[1]));
-						$x = $start[0];
-						$y = $start[1];
-						$x += $change_x;
-						$y += $change_y;
-						while (!($x == $target[0] && $y == $target[1]))
-						{
-							if (!empty($board[$y][$x]))
-							{
-								return FALSE;
-							}
-							$x += $change_x;
-							$y += $change_y;
-						}
-						return TRUE;	
-					}
-					if (abs($start[0] - $target[0]) == abs($start[1] - $target[1]))
-					{
-						$x = $start[0];
-						$y = $start[1];
-						$change_x = ($target[0] - $start[0]) / abs($start[0] - $target[0]);
-						$change_y = ($target[1] - $start[1]) / abs($start[1] - $target[1]);
-						$x += $change_x;
-						$y += $change_y;
-						while (!($x == $target[0] && $y == $target[1]))
-						{
-							
-							if (!empty($board[$y][$x]))
-							{
-								return FALSE;
-							}
-							$x += $change_x;
-							$y += $change_y;
-						}
-						return TRUE;
-					}
-					return FALSE;
-		            break;
-				
 				case "P": /* white pawn */
-					if (in_array($board[$target[1]][$target[0]], $this->whitePieces)) /* check if a piece of the same color is on the square */
-					{
-						return FALSE;  
-					}
-
 					if ($target[1] - $start[1] == 1)
 					{
 						return TRUE;	
@@ -598,14 +405,8 @@
 						return TRUE;
 					}
 					return FALSE;
-		            break;
 					
 				case "p": /* black pawn */
-					if (in_array($board[$target[1]][$target[0]], $this->blackPieces)) /* check if a piece of the same color is on the square */
-					{
-						return FALSE;  
-					}
-
 					if ($target[1] - $start[1] == -1)
 					{
 						return TRUE;	
@@ -614,9 +415,7 @@
 					{
 						return TRUE;
 					}
-					return FALSE;
-		            return TRUE;
-					
+					return FALSE;	
 		    }
 		}
 		
