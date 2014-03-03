@@ -246,8 +246,8 @@
 		* checks if a move is possible, but ignores if it would leave the king in check and whose turn it is
 		*/
 		
-		function isPossibleMove($start, $target, $board)
-		{
+		function isPossibleMove($start, $target, $board, $castling = FALSE) /* castling is used to prevent a loop */
+		{	
 			$start = $this->parseSquare($start);
 			$target = $this->parseSquare($target);
 		    $start = array((int)substr($start, 0, 1) - 1, ((int)substr($start, 1, 1)) - 1);
@@ -286,15 +286,108 @@
 					}
 		        
 		        case "K": /* King */
+		            if ((abs($start[0] - $target[0]) == 1 && abs($start[1] - $target[1]) == 1) || (abs($start[0] - $target[0]) == 0 && abs($start[1] - $target[1]) == 1) || (abs($start[0] - $target[0]) == 1 && abs($start[1] - $target[1]) == 0))
+					{
+						return TRUE;  
+					}
+					
+					if ($start == array(4,0) && $target = array(6,0) && $this->castlings["K"] && $castling && $board[0][7] == "R" && $board[0][5] == "")
+					{
+				    	foreach ($this->board as $rankNumber => $rank)
+            			{
+            				foreach ($rank as $fileNumber => $square)
+            				{
+        						if (in_array($square, $this->blackPieces))
+        						{
+        							if ($this->isPossibleMove(($fileNumber + 1) . ($rankNumber + 1), "f1", $this->board))
+        							{
+        								return FALSE;
+        							}
+        							if ($this->isPossibleMove(($fileNumber + 1) . ($rankNumber + 1), "e1", $this->board))
+        							{
+        								return FALSE;
+        							}
+        						}
+            				}
+            			}
+					    return TRUE;
+					}
+					
+					if ($start == array(4,0) && $target = array(2,0) && $this->castlings["Q"] && $castling && $board[0][0] == "R" && $board[0][3] == "")
+					{
+					    foreach ($this->board as $rankNumber => $rank)
+            			{
+            				foreach ($rank as $fileNumber => $square)
+            				{
+        						if (in_array($square, $this->blackPieces))
+        						{
+        							if ($this->isPossibleMove(($fileNumber + 1) . ($rankNumber + 1), "d1", $this->board))
+        							{
+        								return FALSE;
+        							}
+        							if ($this->isPossibleMove(($fileNumber + 1) . ($rankNumber + 1), "e1", $this->board))
+        							{
+        								return FALSE;
+        							}
+        						}
+            				}
+            			}
+					    return TRUE;
+					}
+					
+					return FALSE;
+		        
 		        case "k":    
 					if ((abs($start[0] - $target[0]) == 1 && abs($start[1] - $target[1]) == 1) || (abs($start[0] - $target[0]) == 0 && abs($start[1] - $target[1]) == 1) || (abs($start[0] - $target[0]) == 1 && abs($start[1] - $target[1]) == 0))
 					{
 						return TRUE;  
 					}
-					else
+					if ($start == array(4,7) && $target = array(6,7) && $this->castlings["k"] && $castling && $board[7][7] == "R" && $board[7][5] == "")
 					{
-						return FALSE;
+				    	foreach ($this->board as $rankNumber => $rank)
+            			{
+            				foreach ($rank as $fileNumber => $square)
+            				{
+        						if (in_array($square, $this->whitePieces))
+        						{
+        							if ($this->isPossibleMove(($fileNumber + 1) . ($rankNumber + 1), "f8", $this->board))
+        							{
+        								return FALSE;
+        							}
+        							if ($this->isPossibleMove(($fileNumber + 1) . ($rankNumber + 1), "e8", $this->board))
+        							{
+        								return FALSE;
+        							}
+        						}
+            				}
+            			}
+					    return TRUE;
 					}
+					
+					if ($start == array(4,7) && $target = array(2,7) && $this->castlings["q"] && $castling && $board[7][0] == "R" && $board[7][3] == "")
+					{
+					    foreach ($this->board as $rankNumber => $rank)
+            			{
+            				foreach ($rank as $fileNumber => $square)
+            				{
+        						if (in_array($square, $this->whitePieces))
+        						{
+        							if ($this->isPossibleMove(($fileNumber + 1) . ($rankNumber + 1), "d8", $this->board))
+        							{
+        								return FALSE;
+        							}
+        							if ($this->isPossibleMove(($fileNumber + 1) . ($rankNumber + 1), "e8", $this->board))
+        							{
+        								return FALSE;
+        							}
+        						}
+            				}
+            			}
+					    return TRUE;
+					}
+					
+					
+					return FALSE;
 		          
 				case "B": /* bishop */
 				case "b":	
@@ -421,13 +514,15 @@
 		
 		function isValidMove($start, $target)
 		{	
-			if (!$this->isPossibleMove($start, $target, $this->board))
+			if (!$this->isPossibleMove($start, $target, $this->board, TRUE))
 			{
 				return FALSE;
 			}
 			
 			$start = $this->parseSquare($start);
 			$target = $this->parseSquare($target);
+			
+			
 			
 		    $start = array((int)substr($start, 0, 1) - 1, ((int)substr($start, 1, 1)) - 1);
 		    $target = array((int)substr($target, 0, 1) - 1, ((int)substr($target, 1, 1)) - 1);
