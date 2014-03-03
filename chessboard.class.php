@@ -489,7 +489,7 @@
 					return FALSE;
 					
 				case "P": /* white pawn */
-					if ($target[1] - $start[1] == 1)
+					if ($target[1] - $start[1] == 1 && $this->board[$target[1]][$target[0]] == "")
 					{
 						return TRUE;	
 					}
@@ -504,7 +504,7 @@
 					return FALSE;
 					
 				case "p": /* black pawn */
-					if ($target[1] - $start[1] == -1)
+					if ($target[1] - $start[1] == -1  && $this->board[$target[1]][$target[0]] == "")
 					{
 						return TRUE;	
 					}
