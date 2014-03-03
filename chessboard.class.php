@@ -342,7 +342,7 @@
 					{
 						return TRUE;  
 					}
-					if ($start == array(4,7) && $target = array(6,7) && $this->castlings["k"] && $castling && $board[7][7] == "R" && $board[7][5] == "")
+					if ($start == array(4,7) && $target = array(6,7) && $this->castlings["k"] && $castling && $board[7][7] == "r" && $board[7][5] == "")
 					{
 				    	foreach ($this->board as $rankNumber => $rank)
             			{
@@ -364,7 +364,7 @@
 					    return TRUE;
 					}
 					
-					if ($start == array(4,7) && $target = array(2,7) && $this->castlings["q"] && $castling && $board[7][0] == "R" && $board[7][3] == "")
+					if ($start == array(4,7) && $target = array(2,7) && $this->castlings["q"] && $castling && $board[7][0] == "r" && $board[7][3] == "")
 					{
 					    foreach ($this->board as $rankNumber => $rank)
             			{
@@ -493,7 +493,11 @@
 					{
 						return TRUE;	
 					}
-					if (($target[1] - $start[1] == 1 ) && (abs($target[0] - $start[0]) == 1) && ((!empty($board[$target[1]][$target[0]])) || parseSquare($this->enPassant) == (string)$start . (string)$target))
+					if (($target[1] - $start[1] == 1 ) && (abs($target[0] - $start[0]) == 1) && (!empty($board[$target[1]][$target[0]])))
+					{
+						return TRUE;
+					}
+					if (!empty($this->enPassant) && ($target[1] - $start[1] == 1 ) && (abs($target[0] - $start[0]) == 1) && $this->parseSquare($this->enPassant) == (string)$target[0] . (string)$target[1])
 					{
 						return TRUE;
 					}
@@ -504,7 +508,11 @@
 					{
 						return TRUE;	
 					}
-					if (($target[1] - $start[1] == -1 ) && (abs($target[0] - $start[0]) == 1) && ((!empty($board[$target[1]][$target[0]])) || parseSquare($this->enPassant) == (string)$start . (string)$target))
+					if (($target[1] - $start[1] == -1 ) && (abs($target[0] - $start[0]) == 1) && (!empty($board[$target[1]][$target[0]])))
+					{
+						return TRUE;
+					}
+					if (!empty($this->enPassant) && ($target[1] - $start[1] == -1 ) && (abs($target[0] - $start[0]) == 1) && $this->parseSquare($this->enPassant) == (string)$target[0] . (string)$target[1])
 					{
 						return TRUE;
 					}
@@ -594,11 +602,76 @@
 		
 		function doMove($start, $target)
 		{
+			if (!$this->isValidMove($start, $target))
+			{
+				throw new chessboardException("function doMove: $start - $target isn't a legal move.", 4);
+			}
+			
 			$start = $this->parseSquare($start);
 			$target = $this->parseSquare($target);
 		    $start = array((int)substr($start, 0, 1) - 1, ((int)substr($start, 1, 1)) - 1);
 		    $target = array((int)substr($target, 0, 1) - 1, ((int)substr($target, 1, 1)) - 1);
+			
+			
+			switch ($this->board[$start[1]][$start[0]])
+		    {
+		        case "K": /* King */
+					if ($start == array(4,0) && $target == array(6,0) && $this->castlings["K"] && $this->board[0][7] == "R")
+					{
+						$this->board[0][5] = "R";
+						$this->board[0][7] = "";
+					}
+					
+					if ($start == array(4,0) && $target == array(2,0) && $this->castlings["Q"] && $this->board[0][0] == "R")
+					{
+					    $this->board[0][3] = "R";
+						$this->board[0][0] = "";
+					}
+					
+					break;
+		        
+		        case "k":    
+					if ($start == array(4,7) && $target == array(6,7) && $this->castlings["k"] && $this->board[7][7] == "r")
+					{
+				    	$this->board[7][5] = "R";
+						$this->board[7][7] = "";
+					}
+					
+					if ($start == array(4,7) && $target == array(2,7) && $this->castlings["q"] && $this->board[7][0] == "r")
+					{
+						$this->board[7][3] = "R";
+						$this->board[7][0] = "";
+					}
+					
+					break;
+		          
+				case "P": /* white pawn */
+					if (empty($this->enPassant))
+					{
+						break;
+					}
+					if ($this->parseSquare($this->enPassant) == (string)$target[0] . (string)$target[1])
+					{
+						$this->board[$target[1] - 1][$target[0]] = "";
+					}
+					break;
+				case "p": /* black pawn */
+					if (empty($this->enPassant))
+					{
+						break;
+					}
+					if ($this->parseSquare($this->enPassant) == (string)$target[0] . (string)$target[1])
+					{
+						$this->board[$target[1] + 1][$target[0]] = "";
+					}	
+					break;
+		    }
+			$this->board[$target[1]][$target[0]] = $this->board[$start[1]][$start[0]];
+			$this->board[$start[1]][$start[0]] = "";
+			
+			$this->turn = (($this->turn == "w") ? "b" : "w"); /* change the right to move */
 		}
+		
 		
 		/**
 		* string getHTML ()
