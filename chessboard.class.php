@@ -246,8 +246,8 @@
 		* checks if a move is possible, but ignores if it would leave the king in check and whose turn it is
 		*/
 		
-		function isPossibleMove($start, $target, $board)
-		{
+		function isPossibleMove($start, $target, $board, $castling = FALSE) /* castling is used to prevent a loop */
+		{	
 			$start = $this->parseSquare($start);
 			$target = $this->parseSquare($target);
 		    $start = array((int)substr($start, 0, 1) - 1, ((int)substr($start, 1, 1)) - 1);
@@ -291,7 +291,7 @@
 						return TRUE;  
 					}
 					
-					if ($start == array(4,0) && $target = array(6,0) && $this->castlings["K"])
+					if ($start == array(4,0) && $target = array(6,0) && $this->castlings["K"] && $castling && $board[0][7] == "R" && $board[0][5] == "")
 					{
 				    	foreach ($this->board as $rankNumber => $rank)
             			{
@@ -313,7 +313,7 @@
 					    return TRUE;
 					}
 					
-					if ($start == array(4,0) && $target = array(2,0) && $this->castlings["Q"])
+					if ($start == array(4,0) && $target = array(2,0) && $this->castlings["Q"] && $castling && $board[0][0] == "R" && $board[0][3] == "")
 					{
 					    foreach ($this->board as $rankNumber => $rank)
             			{
@@ -342,7 +342,7 @@
 					{
 						return TRUE;  
 					}
-					if ($start == array(4,7) && $target = array(6,7) && $this->castlings["k"])
+					if ($start == array(4,7) && $target = array(6,7) && $this->castlings["k"] && $castling && $board[7][7] == "R" && $board[7][5] == "")
 					{
 				    	foreach ($this->board as $rankNumber => $rank)
             			{
@@ -364,7 +364,7 @@
 					    return TRUE;
 					}
 					
-					if ($start == array(4,7) && $target = array(2,7) && $this->castlings["q"])
+					if ($start == array(4,7) && $target = array(2,7) && $this->castlings["q"] && $castling && $board[7][0] == "R" && $board[7][3] == "")
 					{
 					    foreach ($this->board as $rankNumber => $rank)
             			{
@@ -514,13 +514,15 @@
 		
 		function isValidMove($start, $target)
 		{	
-			if (!$this->isPossibleMove($start, $target, $this->board))
+			if (!$this->isPossibleMove($start, $target, $this->board, TRUE))
 			{
 				return FALSE;
 			}
 			
 			$start = $this->parseSquare($start);
 			$target = $this->parseSquare($target);
+			
+			
 			
 		    $start = array((int)substr($start, 0, 1) - 1, ((int)substr($start, 1, 1)) - 1);
 		    $target = array((int)substr($target, 0, 1) - 1, ((int)substr($target, 1, 1)) - 1);
