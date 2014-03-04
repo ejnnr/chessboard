@@ -242,6 +242,87 @@
 			}
 		}
 		
+		/**
+		* array parseAlgebraicMove (string move)
+		*
+		* returns an array: array(string start, string target), e.g.: array("52"; "54")
+		*/
+		
+		function parseAlgebraicMove($move)
+		{
+			$move = str_replace(array("+", "#", "x", " "), array("", "", "", ""), $move); /* remove +, #, x and space */
+			$piece = "";
+			$start = array();
+			$target = array();
+			switch (substr($move, 0, 1))
+			{
+				case "O": /* castling */
+					$piece = ($this->turn == "w") ? "K" : "k";
+					break; /* TODO: Not ready yet! */
+				case "K":
+					$piece = ($this->turn == "w") ? "K" : "k";
+					break;
+				case "Q":
+					$piece = ($this->turn == "w") ? "Q" : "q";
+					break;
+				case "R":
+					$piece = ($this->turn == "w") ? "R" : "r";
+					break;
+				case "B":
+					$piece = ($this->turn == "w") ? "B" : "b";
+					break;
+				case "N":
+					$piece = ($this->turn == "w") ? "N" : "n";
+					break;
+				case "a": case "b": case "c": case "d": case "e": case "f": case "g": case "h": /* no piece -> pawn */
+					$piece = ($this->turn == "w") ? "P" : "p";
+					break;
+				default:
+					throw new chessboardException("function parseAlgebraicMove: move has no valid syntax: " . substr($move, 0, 1) . " isn't an allowed char at the beginning of move.", 4);
+			}
+			$moveTemp = preg_replace("/[=][QRBN]/", "", $move); /* remove promotion */
+			if ($piece != "P" && $piece != "p") /* remove piece letter */
+			{
+				$moveTemp = substr($moveTemp, 1);
+			}
+			$move = str_replace(array("?", "!"), array("", ""), $move); /* remove annotations like ?? or !? */
+			$moveTemp = preg_replace("/[$][1-9]+/", "", $move); /* remove annotation like $ 34 (spaces have already been removed earlier) */
+			/* now $moveTemp looks like this: maybe the start file or rank or both and then the target square */
+			$targetSquare = substr($moveTemp, -2); /* get the last two characters of the remaining string */
+			$targetSquare = $this->parseSquare($targetSquare);
+			$target = array((int)substr($targetSquare, 0, 1) - 1, ((int)substr($targetSquare, 1, 1)) - 1);
+			$moveTemp = substr($moveTemp, 0, strlen($moveTemp) - 2); /* removing the target square */
+			switch (strlen($moveTemp))
+			{
+				case 0:
+					break;
+				case 1:
+					/* TODO: check if the char is a rank(number) or a file(letter) and set $start[0] or $start[1] */
+					break;
+				case 2:
+					$startSquare = parseSquare($moveTemp);
+					$start = array((int)substr($startSquare, 0, 1) - 1, ((int)substr($startSquare, 1, 1)) - 1);
+					break;
+				default:
+					throw new chessboardException("function parseAlgebraicMove: move hasn't a valid syntax", 4);
+			}
+		}
+		
+		/**
+		* void loadPgn (string pgn)
+		*
+		* loads a pgn
+		*/
+		
+		function loadPgn ($pgn)
+		{
+			if (empty($pgn))
+			{
+				throw new chessboardException("function loadPgn: Argument pgn must not be empty", 2);
+			}
+			
+		}
+		
 		/*
 		* checks if a move is possible, but ignores if it would leave the king in check and whose turn it is
 		*/
