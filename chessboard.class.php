@@ -26,6 +26,7 @@
 		private $moveNumber;
 		private $whitePieces = array("P", "N", "B", "R", "Q", "K");
 		private $blackPieces = array("p", "n", "b", "r", "q", "k");
+		private $moves; /* 1st dimension: half-move number, 2nd dimension: start, target, comment annotation symbol and promotion */
 		
 		function __construct($pgn = "", $fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
 		{	
@@ -43,7 +44,6 @@
 			{
 				$this->pgn = $pgn;
 			}
-			
 		}
 		
 		/**
