@@ -297,7 +297,18 @@
 				case 0:
 					break;
 				case 1:
-					/* TODO: check if the char is a rank(number) or a file(letter) and set $start[0] or $start[1] */
+					if (preg_match("/[a-h]/", $moveTemp)) /* file */
+					{
+					
+					}
+					elseif (preg_match("/[1-8]/", $moveTemp)) /* file */
+					{
+					
+					}
+					else
+					{
+						throw new chessboardException("function parseAlgebraicMove: move hasn't got a valid syntax.", 4);
+					}
 					break;
 				case 2:
 					$startSquare = parseSquare($moveTemp);
