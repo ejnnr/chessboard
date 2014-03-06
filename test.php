@@ -29,7 +29,8 @@
 			$board1 = new chessboard("", "r1bqk1nr/pppp1ppp/2n5/2b1p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4");
 			$board1->doMove("e1", "g1");
 			echo $board1->getHTML();
-			var_dump($board1->isValidMove("d7", "d6"));
+			$board1->parseAlgebraicMove("d6");
+			
 		?>
 	</body>
 </html>

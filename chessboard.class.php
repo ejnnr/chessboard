@@ -282,8 +282,8 @@
 			{
 				$moveTemp = substr($moveTemp, 1);
 			}
-			$move = str_replace(array("?", "!"), array("", ""), $move); /* remove annotations like ?? or !? */
-			$moveTemp = preg_replace("/[$][1-9]+/", "", $move); /* remove annotation like $ 34 (spaces have already been removed earlier) */
+			$moveTemp = str_replace(array("?", "!"), array("", ""), $moveTemp); /* remove annotations like ?? or !? */
+			$moveTemp = preg_replace("/[$][1-9]+/", "", $moveTemp); /* remove annotation like $ 34 (spaces have already been removed earlier) */
 			/* now $moveTemp looks like this: maybe the start file or rank or both and then the target square */
 			$targetSquare = substr($moveTemp, -2); /* get the last two characters of the remaining string */
 			$targetSquare = $this->parseSquare($targetSquare);
@@ -340,6 +340,44 @@
 				default:
 					throw new chessboardException("function parseAlgebraicMove: move hasn't a valid syntax", 4);
 			}
+			
+			foreach ($this->board as $rankNumber => $rank)
+			{
+				foreach ($rank as $fileNumber => $square)
+				{
+					if ($this->turn == "w")
+					{
+						if (in_array($square, $this->whitePieces))
+						{
+							if ($this->isValidMove(($fileNumber + 1) . ($rankNumber + 1), $target[0] . $target[1], $this->board))
+							{
+								$start = array($fileNumber, $rankNumber); /* TODO: Not ready yet: start square must be used if not empty */
+							}
+						}
+					}
+					if ($this->turn == "b")
+					{
+						if (in_array($square, $this->blackPieces))
+						{
+							if ($this->board[$rankNumber][$fileNumber] == $piece)
+							{
+								if ($this->isPossibleMove(($fileNumber + 1) . ($rankNumber + 1), ($target[0] + 1) . ($target[1] + 1), $this->board))
+								{
+									$start = array($fileNumber, $rankNumber); /* TODO: Not ready yet: start square must be used if not empty */
+								}
+							}
+							
+						}
+					}
+				}
+			}
+			
+			/* only for testing */
+			var_dump($start);
+			echo "<br>";
+			var_dump($target);
+			echo "<br>";
+			var_dump($piece);
 		}
 		
 		/**
@@ -361,7 +399,7 @@
 		* checks if a move is possible, but ignores if it would leave the king in check and whose turn it is
 		*/
 		
-		function isPossibleMove($start, $target, $board, $castling = FALSE) /* castling is used to prevent a loop */
+		function isPossibleMove($start, $target, $board, $castling = FALSE) /* castling is used to prevent a infinite loop */
 		{	
 			$start = $this->parseSquare($start);
 			$target = $this->parseSquare($target);
