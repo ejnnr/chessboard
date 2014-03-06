@@ -493,6 +493,10 @@
 					{
 						return TRUE;	
 					}
+					if ($start[1] == 1 && $target[0] == $start[0] && $target[1] == 3 && $this->board[$target[1]][$target[0]] == "") /* two squares forward if pawn hasn't moved yet */
+					{
+						return TRUE;
+					}
 					if (($target[1] - $start[1] == 1 ) && (abs($target[0] - $start[0]) == 1) && (!empty($board[$target[1]][$target[0]])))
 					{
 						return TRUE;
@@ -507,6 +511,10 @@
 					if ($target[1] - $start[1] == -1  && $this->board[$target[1]][$target[0]] == "")
 					{
 						return TRUE;	
+					}
+					if ($start[1] == 6 && $target[0] == $start[0] && $target[1] == 4 && $this->board[$target[1]][$target[0]] == "") /* two squares forward if pawn hasn't moved yet */
+					{
+						return TRUE;
 					}
 					if (($target[1] - $start[1] == -1 ) && (abs($target[0] - $start[0]) == 1) && (!empty($board[$target[1]][$target[0]])))
 					{
