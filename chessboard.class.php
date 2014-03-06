@@ -349,9 +349,12 @@
 					{
 						if (in_array($square, $this->whitePieces))
 						{
-							if ($this->isValidMove(($fileNumber + 1) . ($rankNumber + 1), ($target[0] + 1) . ($target[1] + 1), $this->board))
+							if ($this->board[$rankNumber][$fileNumber] == $piece)
 							{
-								$start = array($fileNumber, $rankNumber); /* TODO: Not ready yet: start square must be used if not empty */
+								if ($this->isValidMove(($fileNumber + 1) . ($rankNumber + 1), ($target[0] + 1) . ($target[1] + 1), $this->board))
+								{
+									$start = array($fileNumber, $rankNumber); /* TODO: Not ready yet: start square must be used if not empty */
+								}
 							}
 						}
 					}
@@ -361,12 +364,11 @@
 						{
 							if ($this->board[$rankNumber][$fileNumber] == $piece)
 							{
-								if ($this->isPossibleMove(($fileNumber + 1) . ($rankNumber + 1), ($target[0] + 1) . ($target[1] + 1), $this->board))
+								if ($this->isValidMove(($fileNumber + 1) . ($rankNumber + 1), ($target[0] + 1) . ($target[1] + 1), $this->board))
 								{
 									$start = array($fileNumber, $rankNumber); /* TODO: Not ready yet: start square must be used if not empty */
 								}
-							}
-							
+							}		
 						}
 					}
 				}
