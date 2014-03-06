@@ -40,10 +40,7 @@
 				throw new chessboardException("__construct: fen may not be null", 2);
 			}
 			
-			if (!empty($pgn))
-			{
-				$this->pgn = $pgn;
-			}
+			$this->loadPgn = $pgn;
 		}
 		
 		/**
@@ -299,11 +296,37 @@
 				case 1:
 					if (preg_match("/[a-h]/", $moveTemp)) /* file */
 					{
-					
+						switch ($moveTemp)
+						{
+							case "a":
+								$start = array(0, NULL);
+								break;
+							case "b":
+								$start = array(1, NULL);
+								break;
+							case "c":
+								$start = array(2, NULL);
+								break;
+							case "d":
+								$start = array(3, NULL);
+								break;
+							case "e":
+								$start = array(4, NULL);
+								break;
+							case "f":
+								$start = array(5, NULL);
+								break;
+							case "g":
+								$start = array(6, NULL);
+								break;
+							case "h":
+								$start = array(7, NULL);
+								break;
+						}
 					}
-					elseif (preg_match("/[1-8]/", $moveTemp)) /* file */
+					elseif (preg_match("/[1-8]/", $moveTemp)) /* rank */
 					{
-					
+						$start = array(NULL, (int)$moveTemp - 1);
 					}
 					else
 					{
@@ -331,7 +354,7 @@
 			{
 				throw new chessboardException("function loadPgn: Argument pgn must not be empty", 2);
 			}
-			
+			$this->pgn = $pgn;
 		}
 		
 		/*
